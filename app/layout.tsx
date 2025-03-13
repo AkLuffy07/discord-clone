@@ -3,6 +3,7 @@ import { Open_Sans } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { ModalProvider } from "@/components/providers/modal-provider";
 import { cn } from "@/lib/utils";
 
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
@@ -40,6 +41,7 @@ export default function RootLayout({
             storageKey="discord-theme"
           >
             <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
+            <ModalProvider />
             {children}
           </ThemeProvider>
         </body>
