@@ -53,7 +53,6 @@ export const MembersModal = () => {
                 url: `/api/members/${memberId}`,
                 query: {
                     serverId: server?.id,
-                    memberId,
                 }
             })
 
@@ -63,7 +62,29 @@ export const MembersModal = () => {
             
 
         } catch (error) {
-            console.log("Manage Members :: Error :: ", error);
+            console.log("Manage Members :: Role :: Error :: ", error);
+        } finally {
+            setLoadingId("");
+        }
+    }
+
+    const onKick = async (memberId: string) => {
+        try {
+            setLoadingId(memberId);
+            const url = qs.stringifyUrl({
+                url: `/api/members/${memberId}`,
+                query: {
+                    serverId: server?.id,
+                }
+            });
+
+            const response = await axios.delete(url);
+            router.refresh();
+            onOpen("members", { server: response.data });
+
+
+        } catch (error) {
+            console.log("Manage Members :: Kick :: Error :: ", error);
         } finally {
             setLoadingId("");
         }
@@ -73,7 +94,7 @@ export const MembersModal = () => {
     return (
         <Dialog open={isModalOpen} onOpenChange={onClose}>
             <DialogContent className="bg-white text-black overflow-hidden">
-                <DialogHeader className="pt-8 px-6">
+                <DialogHeader className="pt-4 px-6">
                     <DialogTitle className="text-2xl text-center font-bold">
                         Manage Members
                     </DialogTitle>
@@ -101,7 +122,7 @@ export const MembersModal = () => {
                             {server.profileId !== member.profileId && loadingId !== member.id && (
                                 <div className="ml-auto">
                                     <DropdownMenu>
-                                        <DropdownMenuTrigger>
+                                        <DropdownMenuTrigger className="outline-0">
                                             <MoreVertical className="h-4 w-4 text-zinc-500" />
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent side="left">
@@ -136,7 +157,9 @@ export const MembersModal = () => {
                                                 </DropdownMenuPortal>
                                             </DropdownMenuSub>
                                             <DropdownMenuSeparator />
-                                            <DropdownMenuItem>
+                                            <DropdownMenuItem
+                                                onClick={() => onKick(member.id)}
+                                            >
                                                 <Gavel className="h-4 w-4 mr-2" />
                                                 Kick
                                             </DropdownMenuItem>
