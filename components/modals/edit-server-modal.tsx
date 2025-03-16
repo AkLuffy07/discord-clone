@@ -27,7 +27,7 @@ import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/file-upload";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const formSchema = z.object({
     name: z.string().min(1, {
@@ -76,13 +76,9 @@ export const EditServerModal = () => {
         
     }
 
-    const handleClose = () => {
-        form.reset();
-        onClose();
-    }
 
     return (
-        <Dialog open={isModalOpen} onOpenChange={handleClose}>
+        <Dialog open={isModalOpen} onOpenChange={onClose}>
             <DialogContent className="bg-white text-black p-0 overflow-hidden">
                 <DialogHeader className="pt-8 px-6">
                     <DialogTitle className="text-2xl text-center font-bold">
